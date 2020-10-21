@@ -4,6 +4,15 @@ const connection = mysql.createConnection(config);
 
 connection.connect();
 
+connection.query(
+  "INSERT INTO locations(latitude, longitude) VALUES(25, 32)",
+  (err, locations) => {
+    if (err) {
+      throw err;
+    }
+  }
+);
+
 connection.query("select * from locations", (err, locations) => {
   if (err) {
     throw err;
