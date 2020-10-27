@@ -1,18 +1,8 @@
-var Validator = require("jsonschema").Validator;
-const { validate } = require("jsonschema");
 const mysql = require("mysql");
 const config = require("./config.js");
 var connection = null;
-var validator = new Validator();
-validator = {
-  type: "array",
-  properties: {
-    latitude: { type: "number", min: -90, max: 90 },
-    longitude: { type: "number", min: -180, max: 180 },
-  },
-};
 
-const connectionFunctions = {
+let connectionFunctions = {
   connect: () => {
     connection = mysql.createConnection(config);
     connection.connect();
@@ -20,12 +10,10 @@ const connectionFunctions = {
   close: (callback) => {
     connection.end();
   },
-  save: (location, callback) => {
-    validate(location, validator);
+  save: (lat, long, callback) => {
     connection.query(
-      "INSERT INTO locations(latitude, longitude) VALUES(?)",
-      [location],
-      (err, locations) => {}
+      "INSERT INTO locations(latitude, longitude) VALUES(?, ?)",
+      [lat, long]
     );
   },
   findAll: (callback) => {
@@ -42,7 +30,6 @@ const connectionFunctions = {
       }
     );
   },
-
   findById: (id, callback) => {
     connection.query(
       "select * from locations where id=?",
