@@ -21,6 +21,7 @@
     "eslint-plugin-standard": "^4.0.1"
   },
   "dependencies": {
+    "jsonschema": "^1.4.0",
     "mysql": "^2.18.1"
   }
 }
